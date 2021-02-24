@@ -12,52 +12,54 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 300,
-      child: ListView.builder(
-        itemBuilder: (ctx, index) {
-          return Card(
-            child: Row(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 15,
-                  ),
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.purple,
-                      width: 2,
-                    ),
-                  ),
-                  child: Text(
-                    '\$${transactions[index].amount}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.purple,
-                    ),
-                  ),
+      child: transactions.isEmpty
+          ? Column(children: <Widget>[
+              Text(
+                'No transactions add yet!',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 200,
+                child: Image.asset(
+                  'assets/images/waiting.png',
+                  fit: BoxFit.cover,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
+              ),
+            ])
+          : ListView.builder(
+              itemBuilder: (ctx, index) {
+                return Card(
+                  elevation: 5,
+                  margin: EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 5,
+                  ),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 30,
+                      child: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: FittedBox(
+                          child: Text(
+                              '\$${transactions[index].amount.toStringAsFixed(2)}'),
+                        ),
+                      ),
+                    ),
+                    title: Text(
                       transactions[index].title,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.headline6,
                     ),
-                    Text(
+                    subtitle: Text(
                       DateFormat.yMMMd().format(transactions[index].date),
-                      style: TextStyle(color: Colors.grey),
                     ),
-                  ],
-                )
-              ],
+                  ),
+                );
+              },
+              itemCount: transactions.length,
             ),
-          );
-        },
-        itemCount: transactions.length,
-      ),
     );
   }
 }
